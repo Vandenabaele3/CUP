@@ -1,10 +1,24 @@
+/* 🌍 Basisinstellingen voor volledige achtergronddekking */
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background-color: #b6eaf4;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.2) 1px, transparent 0);
+  background-size: 30px 30px;
+}
+
+/* 📦 Root container */
 #root {
+  min-height: 100%;
   max-width: 1280px;
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
 }
 
+/* 🖼️ Logo styling */
 .logo {
   height: 6em;
   padding: 1.5em;
@@ -18,6 +32,7 @@
   filter: drop-shadow(0 0 2em #61dafbaa);
 }
 
+/* 🔄 Logo animatie */
 @keyframes logo-spin {
   from {
     transform: rotate(0deg);
@@ -27,16 +42,19 @@
   }
 }
 
+/* 🌀 Alleen spinnen bij voorkeur */
 @media (prefers-reduced-motion: no-preference) {
   a:nth-of-type(2) .logo {
     animation: logo-spin infinite 20s linear;
   }
 }
 
+/* 🃏 Card styling */
 .card {
   padding: 2em;
 }
 
+/* 📚 Info-stijl */
 .read-the-docs {
   color: #888;
 }
