@@ -6,7 +6,7 @@ interface ProfileStatsHeaderProps {
   username: string;
 }
 
-const ProfileStatsHeader: React.FC<ProfileStatsHeaderProps> = ({ name}) => {
+const ProfileStatsHeader: React.FC<ProfileStatsHeaderProps> = ({ name }) => {
   return (
     <div className="text-center mt-4">
       <h1 className="text-sm text-gray-400">@{name}</h1>

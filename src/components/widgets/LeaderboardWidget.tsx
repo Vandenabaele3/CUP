@@ -7,17 +7,17 @@ type LeaderboardWidgetProps = {
 
 export default function LeaderboardWidget({ players }: LeaderboardWidgetProps) {
   return (
-    <div className="space-y-2 p-4 min-w-[400px]">
+    <div className="space-y-2">
       {players.map((player, index) => (
         <div
-          key={index}
-          className="flex items-center justify-between bg-white rounded-md shadow-sm p-3"
+          key={player.id}
+          className="flex items-center justify-between rounded-md p-3 bg-white/10"
         >
           <div className="flex items-center space-x-3">
-            <div className="text-2xl font-bold text-sky-400 w-6">
-              {index + 1}
+            <div className="text-2xl font-bold w-6">
+              {index + 1 === 1 ? "🏆" : index + 1}
             </div>
-            <div className="w-8 h-8 rounded-full bg-gray-200" />
+            <div className="w-8 h-8 rounded-full bg-white/20" />
             <div className="font-semibold">{player.name}</div>
           </div>
           <div className="text-lg font-bold">{player.score}</div>

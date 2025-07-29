@@ -2,11 +2,11 @@
 
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Dashboard from "./pages/Dashboard";
-import Competitions from "./pages/Competitions";
 import Participants from "./pages/Participants";
-import Scores from "./pages/Scores";
 import ProfilePage from "./pages/ProfilePage";
 import MainLayout from "./pages/MainLayout";
+import Games from "./pages/Games";
+import Leagues from "./pages/Leagues";
 
 export default function AppRouter() {
   return (
@@ -14,9 +14,9 @@ export default function AppRouter() {
       <Routes>
         <Route path="/" element={<MainLayout />}>
           <Route index element={<Dashboard />} />
-          <Route path="competitions" element={<Competitions />} />
           <Route path="participants" element={<Participants />} />
-          <Route path="scores" element={<Scores />} />
+          <Route path="games" element={<Games />} />
+          <Route path="leagues" element={<Leagues />} />
           <Route path="profile" element={<ProfilePage />} />
         </Route>
       </Routes>

@@ -7,9 +7,10 @@ import ProfileStatsHeader from "../components/profile/ProfileStatsHeader";
 import ProfileHeader from "../components/profile/ProfileHeader";
 import { FastAverageColor } from "fast-average-color";
 import avatar from "../images/avatar.jpg";
-import banner from "../images/banner7.jpg";
+import banner from "../images/Purple.png";
+import { useSetBannerColor } from "../context/ColorContext";
 
-// 🔧 Helper: donkerder of lichter maken van kleur
+// 🔧 Helper om kleur lichter of donkerder te maken
 function adjustColor(hex: string, amount: number) {
   let [r, g, b] = hex
     .replace(/^#/, "")
@@ -26,6 +27,7 @@ function adjustColor(hex: string, amount: number) {
 export default function MainLayout() {
   const [bgColor, setBgColor] = useState("white");
   const [menuColor, setMenuColor] = useState("rgba(0, 0, 0, 0.2)");
+  const { setBannerColor } = useSetBannerColor();
 
   const profileData = {
     name: "John Doe",
@@ -44,20 +46,19 @@ export default function MainLayout() {
       const color = fac.getColor(img);
       const hex = color.hex;
 
-      const lighter = adjustColor(hex, +75); // achtergrond iets lichter
-      const darker = adjustColor(hex, -5);   // sidebar iets donkerder
+      const lighter = adjustColor(hex, +75);
+      const darker = adjustColor(hex, -5);
 
       setBgColor(lighter);
       setMenuColor(darker);
+      setBannerColor(darker);
 
-      // ✅ Zet achtergrond ook op body
       document.body.style.backgroundColor = lighter;
-      document.body.style.backgroundImage = "radial-gradient(rgba(255,255,255,0.2) 1px, transparent 0)";
+      document.body.style.backgroundImage =
+        "radial-gradient(rgba(255,255,255,0.2) 1px, transparent 0)";
       document.body.style.backgroundSize = "30px 30px";
-
-      localStorage.setItem("cardBgColor", darker);
     };
-  }, []);
+  }, [setBannerColor]);
 
   return (
     <div className="flex min-h-screen relative overflow-hidden">
@@ -67,17 +68,16 @@ export default function MainLayout() {
         className="flex-grow overflow-y-auto min-h-screen"
         style={{
           backgroundColor: bgColor,
-          backgroundImage: "radial-gradient(rgba(255,255,255,0.2) 1px, transparent 0)",
+          backgroundImage:
+            "radial-gradient(rgba(255,255,255,0.2) 1px, transparent 0)",
           backgroundSize: "30px 30px",
         }}
       >
-        <div className="relative px-4 md:px-8">
+        <div className="relative px-4 md:px-8 max-w-[1600px] mx-auto">
           <ProfileBanner url={profileData.bannerUrl} />
-
           <div className="absolute top-[2.0rem] left-1/2 transform -translate-x-1/2 z-20">
             <ProfilePicture url={profileData.imageUrl} />
           </div>
-
           <div className="absolute top-[8.5rem] left-1/2 transform -translate-x-1/2 z-20">
             <ProfileStatsHeader
               name={profileData.name}
@@ -86,15 +86,11 @@ export default function MainLayout() {
           </div>
         </div>
 
-        <div className="-mt-5 z-10 relative w-full px-4 md:px-8">
-          <ProfileHeader
-            totalGames={1956}
-            winRate="85%"
-            lossRate="25%"
-          />
+        <div className="-mt-5 z-10 relative px-4 md:px-8 max-w-[1600px] mx-auto">
+          <ProfileHeader totalGames={1956} winRate="85%" lossRate="25%" />
         </div>
 
-        <div className="w-full max-w-6xl mx-auto px-6">
+        <div className="px-4 md:px-8 max-w-[1600px] mx-auto pb-8">
           <Outlet />
         </div>
       </main>

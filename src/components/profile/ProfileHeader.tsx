@@ -1,6 +1,6 @@
+// src/components/profile/ProfileHeader.tsx
 import React from "react";
-import twitchIcon from "../../images/twitch3.png";
-import youtubeIcon from "../../images/youtube4.png"; // hernoem nieuwe bestand naar dit
+import { Youtube, Twitch, Settings } from "lucide-react";
 
 type ProfileHeaderProps = {
   totalGames: number;
@@ -48,7 +48,7 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({
           target="_blank"
           rel="noopener noreferrer"
         >
-          <img src={twitchIcon} alt="Twitch" className="w-8 h-8" />
+          <Twitch className="w-6 h-6 text-white hover:text-purple-400 transition" />
         </a>
 
         <div className="w-px h-6 bg-gray-300 opacity-30" />
@@ -58,7 +58,16 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({
           target="_blank"
           rel="noopener noreferrer"
         >
-          <img src={youtubeIcon} alt="YouTube" className="w-12 h-12 object-contain" />
+          <Youtube className="w-6 h-6 text-white hover:text-red-500 transition" />
+        </a>
+
+        <div className="w-px h-6 bg-gray-300 opacity-30" />
+
+        <a
+          href="/settings"
+          title="Instellingen"
+        >
+          <Settings className="w-6 h-6 text-white hover:text-sky-400 transition" />
         </a>
       </div>
     </div>

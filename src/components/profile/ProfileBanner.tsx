@@ -1,3 +1,4 @@
+// src/components/profile/ProfileBanner.tsx
 import React from "react";
 
 interface ProfileBannerProps {
@@ -11,7 +12,7 @@ const ProfileBanner: React.FC<ProfileBannerProps> = ({ url }) => {
       style={{
         backgroundImage: `url(${url})`,
         backgroundSize: "cover",
-        backgroundPosition: "right center", // iets meer naar het gezicht toe
+        backgroundPosition: "right center",
       }}
     />
   );
