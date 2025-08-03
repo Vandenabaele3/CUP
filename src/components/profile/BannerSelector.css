@@ -1,0 +1,38 @@
+.banner-selector {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 12px;
+  justify-content: center;
+}
+
+.banner-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+}
+
+.banner-thumbnail {
+  width: 160px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.banner-thumbnail:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 6px rgba(255, 255, 255, 0.2);
+}
+
+.banner-label {
+  margin-top: 6px;
+  font-size: 0.875rem;
+  color: #fff;
+  text-align: center;
+  opacity: 0.85;
+}

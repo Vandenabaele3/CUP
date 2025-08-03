@@ -17,14 +17,12 @@ type Props = {
 };
 
 const ProfileInfoCard = ({ info, bgColor }: Props) => {
-  // Lokale state om formulier te kunnen invullen
   const [formData, setFormData] = useState(info);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
   const handleChange = (field: string, value: string) => {
     setFormData({ ...formData, [field]: value });
 
-    // Basisvalidatie voorbeeld
     if (field === "email" && !value.includes("@")) {
       setErrors({ ...errors, email: "Invalid email address" });
     } else if (value.trim() === "") {

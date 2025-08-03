@@ -1,11 +1,18 @@
-import React, { useEffect, useState } from "react";
-import { FastAverageColor } from "fast-average-color";
+import React from "react";
 import ProfileInfoCard from "../components/profile/ProfileInfoCard";
 import ProfileMiniStatCard from "../components/profile/ProfileMiniStatCard";
-import ScoreChart from "../components/profile/ScoreChart";
+import { useBannerColor } from "../context/ColorContext";
+import {
+  FaGamepad,
+  FaTrophy,
+  FaStar,
+  FaFire,
+  FaChartBar,
+  FaUsers,
+} from "react-icons/fa";
 
 export default function ProfilePage() {
-  const [bgColor, setBgColor] = useState("rgba(0,0,0,0.6)");
+  const { bannerColor } = useBannerColor();
 
   const userInfo = {
     fullName: "John Doe",
@@ -20,40 +27,53 @@ export default function ProfilePage() {
     joined: "2024-05-01",
   };
 
-  useEffect(() => {
-    const img = document.querySelector("img");
-    if (img) {
-      const fac = new FastAverageColor();
-      fac.getColorAsync(img)
-        .then((color) => {
-          const transparentColor = color.rgba.replace("rgb", "rgba").replace(")", ", 0.7)");
-          setBgColor(transparentColor);
-          localStorage.setItem("cardBgColor", transparentColor);
-        })
-        .catch(() => {
-          setBgColor("rgba(0,0,0,0.6)");
-        });
-    }
-  }, []);
-
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-      {/* Mini Stat Kaarten */}
-      <div className="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-4">
-        <ProfileMiniStatCard title="Games Played" value="120" icon="🎮" />
-        <ProfileMiniStatCard title="Total Wins" value="95" icon="🏆" />
-        <ProfileMiniStatCard title="Current Rank" value="Gold" icon="⭐" />
-        <ProfileMiniStatCard title="Highest Score" value="9875" icon="🔥" />
-      </div>
+    <div className="w-full pt-6 pb-10">
+      <div className="max-w-[1600px] mx-auto grid grid-cols-1 lg:grid-cols-3 gap-4">
+        {/* Info Card links en breder */}
+        <div className="lg:col-span-2">
+          <ProfileInfoCard info={userInfo} bgColor={bannerColor} />
+        </div>
 
-      {/* Info Card rechts */}
-      <div>
-        <ProfileInfoCard info={userInfo} bgColor={bgColor} />
-      </div>
-
-      {/* Score Chart onderaan */}
-      <div className="lg:col-span-3">
-        <ScoreChart />
+        {/* Mini Stat Kaarten rechts in 2 kolommen x 3 rijen */}
+        <div className="grid grid-cols-2 gap-4">
+          <ProfileMiniStatCard
+            title="Games played"
+            value="120"
+            icon={<FaGamepad className="text-white text-xl" />}
+            bgColor={bannerColor}
+          />
+          <ProfileMiniStatCard
+            title="CUPs won"
+            value="95"
+            icon={<FaTrophy className="text-white text-xl" />}
+            bgColor={bannerColor}
+          />
+          <ProfileMiniStatCard
+            title="Max CUP Score"
+            value="9875"
+            icon={<FaStar className="text-white text-xl" />}
+            bgColor={bannerColor}
+          />
+          <ProfileMiniStatCard
+            title="Current CUP"
+            value="8760"
+            icon={<FaFire className="text-white text-xl" />}
+            bgColor={bannerColor}
+          />
+          <ProfileMiniStatCard
+            title="Matches"
+            value="215"
+            icon={<FaChartBar className="text-white text-xl" />}
+            bgColor={bannerColor}
+          />
+          <ProfileMiniStatCard
+            title="Opponents"
+            value="80"
+            icon={<FaUsers className="text-white text-xl" />}
+            bgColor={bannerColor}
+          />
+        </div>
       </div>
     </div>
   );

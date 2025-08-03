@@ -7,6 +7,7 @@ import {
   FaChevronLeft,
   FaChevronRight,
 } from "react-icons/fa";
+import { useBannerColor } from "../../context/ColorContext";
 
 interface Item {
   id: string;
@@ -29,8 +30,8 @@ const ListWidget: React.FC<ListWidgetProps> = ({
   const [currentPage, setCurrentPage] = useState(1);
   const [sortBy, setSortBy] = useState<keyof Item>("text");
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
-  const [currentItemsPerPage, setCurrentItemsPerPage] =
-    useState(itemsPerPage);
+  const [currentItemsPerPage, setCurrentItemsPerPage] = useState(itemsPerPage);
+  const { bannerColor } = useBannerColor();
 
   const filteredItems = items.filter((item) =>
     item.text.toLowerCase().includes(searchQuery.toLowerCase())
@@ -39,7 +40,6 @@ const ListWidget: React.FC<ListWidgetProps> = ({
   const sortedItems = [...filteredItems].sort((a, b) => {
     const aVal = a[sortBy].toString().toLowerCase();
     const bVal = b[sortBy].toString().toLowerCase();
-
     if (aVal < bVal) return sortOrder === "asc" ? -1 : 1;
     if (aVal > bVal) return sortOrder === "asc" ? 1 : -1;
     return 0;
@@ -105,9 +105,12 @@ const ListWidget: React.FC<ListWidgetProps> = ({
       </div>
 
       {/* Table */}
-      <table className="w-full text-sm bg-white/5 rounded-md overflow-hidden">
-        <thead>
-          <tr className="bg-white/10">
+      <table
+        className="w-full text-sm rounded-md overflow-hidden border border-white/20"
+        style={{ backgroundColor: `${bannerColor}22` }}
+      >
+        <thead className="bg-white/10 text-white">
+          <tr>
             <th
               className="cursor-pointer text-left p-2"
               onClick={() => handleSort("text")}
@@ -119,11 +122,11 @@ const ListWidget: React.FC<ListWidgetProps> = ({
             <th className="text-left p-2">Acties</th>
           </tr>
         </thead>
-        <tbody>
-          {currentItems.map((item, index) => (
+        <tbody className="text-white">
+          {currentItems.map((item) => (
             <tr
               key={item.id}
-              className={index % 2 === 0 ? "bg-white/5" : "bg-white/10"}
+              className="border-t border-white/10 hover:bg-white/10 transition-colors"
             >
               <td className="p-2">{item.text}</td>
               <td className="p-2">{item.created}</td>
