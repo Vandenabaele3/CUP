@@ -6,7 +6,7 @@ import ProfileBanner from "../components/profile/ProfileBanner";
 import ProfilePicture from "../components/profile/ProfilePicture";
 import ProfileStatsHeader from "../components/profile/ProfileStatsHeader";
 import ProfileHeader from "../components/profile/ProfileHeader";
-import avatar from "../images/avatar.jpg";
+//import avatar from "../images/avatar.jpg";
 import { useSetBannerColor } from "../context/ColorContext";
 
 // 🎨 Hulpfunctie om kleur aan te passen
@@ -26,14 +26,16 @@ export default function MainLayout() {
   const { setBannerColor } = useSetBannerColor();
 
   const savedBanner = localStorage.getItem("selectedBanner") || "gray.png";
-  const bannerUrl = `/src/images/backgrounds/${savedBanner}`;
+  const bannerUrl = `/images/backgrounds/${savedBanner}`;
+
 
   const profileData = {
     name: "John Doe",
     username: "johndoe42",
-    imageUrl: avatar,
+    imageUrl: "/uploads/avatars/avatar1.jpg", // <- tijdelijk pad
     bannerUrl,
   };
+
 
   useEffect(() => {
     const img = new Image();
