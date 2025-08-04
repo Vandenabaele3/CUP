@@ -12,7 +12,7 @@ const BannerSelector: React.FC<BannerSelectorProps> = ({ banners, onSelect }) =>
       {banners.map(({ file, label }) => (
         <div key={file} className="banner-item" onClick={() => onSelect(file)}>
           <img
-            src={`/src/images/backgrounds/${file}`}
+            src={`/images/backgrounds/${file}`}
             alt={label}
             className="banner-thumbnail"
           />
