@@ -19,14 +19,10 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({
 
 const availableBanners = [
   { file: "blue2.png", label: "Ocean Blue" },
-  { file: "gray.png", label: "Shadow Gray" },
-  { file: "green.png", label: "Forest Green" },
   { file: "green2.png", label: "Emerald" },
   { file: "Purple.png", label: "Royal Purple" },
-  { file: "yellow.png", label: "Golden Hour" },
   { file: "Blue3.png", label: "Dark blue" },
   { file: "DarkGray.png", label: "Black & White" },
-  { file: "Orange.png", label: "Sunset" },
   { file: "Orange2.png", label: "Evening Glow" },
   { file: "Red.png", label: "Intense Red" },
   { file: "Yellow2.png", label: "Yellow" }
