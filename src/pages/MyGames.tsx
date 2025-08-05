@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { useBannerColor } from "../context/ColorContext";
+import CompleteGameWizard from "../components/Wizards/CompleteGameWizard";
 
 interface Game {
   id: number;
@@ -22,6 +23,7 @@ const dummyGames: Game[] = Array.from({ length: 123 }, (_, i) => ({
 const MyGames: React.FC = () => {
   const { bannerColor } = useBannerColor();
   const [page, setPage] = useState(1);
+  const [showCompleteWizard, setShowCompleteWizard] = useState(false);
 
   const sortedGames = [...dummyGames].sort(
     (a, b) => new Date(b.playedOn).getTime() - new Date(a.playedOn).getTime()
@@ -42,7 +44,10 @@ const MyGames: React.FC = () => {
       >
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-lg font-semibold text-white">My Played Games</h2>
-          <button className="bg-white/10 hover:bg-white/20 text-white text-sm px-3 py-1 rounded-lg flex items-center">
+          <button
+            className="bg-white/10 hover:bg-white/20 text-white text-sm px-3 py-1 rounded-lg flex items-center"
+            onClick={() => setShowCompleteWizard(true)}
+          >
             <span className="text-lg mr-1">+</span> Complete Game
           </button>
         </div>
@@ -93,6 +98,14 @@ const MyGames: React.FC = () => {
           </div>
         )}
       </div>
+
+      {/* ✅ Wizard tonen als modal */}
+      {showCompleteWizard && (
+        <CompleteGameWizard
+          open={showCompleteWizard}
+          onClose={() => setShowCompleteWizard(false)}
+        />
+      )}
     </div>
   );
 };
