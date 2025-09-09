@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import {
-  FaTrash,
-  FaEdit,
-  FaPlus,
-  FaBars,
-  FaChevronLeft,
-  FaChevronRight,
-} from "react-icons/fa";
+  Trash2,
+  Pencil,
+  Plus,
+  Menu,
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react";
 import { useBannerColor } from "../../context/ColorContext";
 
 interface Item {
@@ -16,20 +16,23 @@ interface Item {
   status: string;
 }
 
-interface ListWidgetProps {
-  initialItems: Item[];
-  itemsPerPage?: number;
-}
+type SortOrder = "asc" | "desc";
 
-const ListWidget: React.FC<ListWidgetProps> = ({
-  initialItems,
-  itemsPerPage = 15,
+type Props = {
+  items: Item[];
+  onDelete?: (id: string) => void;
+  itemsPerPage?: number;
+};
+
+const ListWidget: React.FC<Props> = ({
+  items,
+  onDelete,
+  itemsPerPage = 10,
 }) => {
-  const [items, setItems] = useState<Item[]>(initialItems);
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [sortBy, setSortBy] = useState<keyof Item>("text");
-  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
+  const [sortOrder, setSortOrder] = useState<SortOrder>("asc");
   const [currentItemsPerPage, setCurrentItemsPerPage] = useState(itemsPerPage);
   const { bannerColor } = useBannerColor();
 
@@ -45,7 +48,10 @@ const ListWidget: React.FC<ListWidgetProps> = ({
     return 0;
   });
 
-  const totalPages = Math.ceil(sortedItems.length / currentItemsPerPage);
+  const totalPages = Math.max(
+    1,
+    Math.ceil(sortedItems.length / currentItemsPerPage)
+  );
   const startIndex = (currentPage - 1) * currentItemsPerPage;
   const currentItems = sortedItems.slice(
     startIndex,
@@ -53,7 +59,7 @@ const ListWidget: React.FC<ListWidgetProps> = ({
   );
 
   const handleDelete = (id: string) => {
-    setItems((prev) => prev.filter((item) => item.id !== id));
+    if (onDelete) onDelete(id);
   };
 
   const handleSort = (key: keyof Item) => {
@@ -91,28 +97,25 @@ const ListWidget: React.FC<ListWidgetProps> = ({
             setCurrentPage(1);
           }}
         >
-          {[5, 10, 15, 20, 50, 100].map((num) => (
-            <option key={num} value={num}>
-              {num} per pagina
+          {[5, 10, 20, 50].map((n) => (
+            <option key={n} value={n}>
+              {n}/pagina
             </option>
           ))}
         </select>
 
-        <div className="flex items-center gap-2 text-white">
-          <FaBars className="cursor-pointer" />
-          <FaPlus className="cursor-pointer" />
+        <div className="flex items-center gap-3">
+          <Menu className="cursor-pointer" />
+          <Plus className="text-green-600 cursor-pointer" />
         </div>
       </div>
 
-      {/* Table */}
-      <table
-        className="w-full text-sm rounded-md overflow-hidden border border-white/20"
-        style={{ backgroundColor: `${bannerColor}22` }}
-      >
-        <thead className="bg-white/10 text-white">
-          <tr>
+      {/* Tabel */}
+      <table className="w-full text-left border-collapse bg-white/10 rounded-xl overflow-hidden">
+        <thead style={{ backgroundColor: bannerColor }}>
+          <tr className="text-white">
             <th
-              className="cursor-pointer text-left p-2"
+              className="p-2 cursor-pointer select-none"
               onClick={() => handleSort("text")}
             >
               Text {sortBy === "text" ? (sortOrder === "asc" ? "↑" : "↓") : ""}
@@ -133,8 +136,8 @@ const ListWidget: React.FC<ListWidgetProps> = ({
               <td className="p-2">{item.status}</td>
               <td className="p-2">
                 <div className="flex gap-2">
-                  <FaEdit className="text-blue-600 cursor-pointer" />
-                  <FaTrash
+                  <Pencil className="text-blue-600 cursor-pointer" />
+                  <Trash2
                     className="text-red-600 cursor-pointer"
                     onClick={() => handleDelete(item.id)}
                   />
@@ -155,13 +158,11 @@ const ListWidget: React.FC<ListWidgetProps> = ({
             onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
             disabled={currentPage === 1}
             className={`text-white text-lg ${
-              currentPage === 1
-                ? "opacity-30 cursor-default"
-                : "hover:text-gray-300"
+              currentPage === 1 ? "opacity-30 cursor-default" : "hover:text-gray-300"
             }`}
             aria-label="Vorige pagina"
           >
-            <FaChevronLeft />
+            <ChevronLeft />
           </button>
           <button
             onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
@@ -173,7 +174,7 @@ const ListWidget: React.FC<ListWidgetProps> = ({
             }`}
             aria-label="Volgende pagina"
           >
-            <FaChevronRight />
+            <ChevronRight />
           </button>
         </div>
       </div>

@@ -1,17 +1,13 @@
+// src/pages/Dashboard.tsx
 import React from "react";
 import { useBannerColor } from "../context/ColorContext";
+
 import WidgetWrapper from "../components/widgets/WidgetWrapper";
 import LeaderboardWidget from "../components/widgets/LeaderboardWidget";
 import ScoreChart from "../components/widgets/ScoreChart";
 import GenreCountCard from "../components/widgets/GenreCountCard";
 import TopGenresBarChart from "../components/widgets/TopGenresBarChart";
 import TopFinisherWidget from "../components/widgets/TopFinisherWidget";
-
-const leaderboardData = [
-  { id: "1", name: "Alice", score: 120 },
-  { id: "2", name: "Bob", score: 95 },
-  { id: "3", name: "Charlie", score: 90 },
-];
 
 const chartData = [
   { date: "Ma", Alice: 10, Bob: 12, Charlie: 8 },
@@ -32,7 +28,7 @@ const genreData = [
 const topFinisher = {
   name: "Alice",
   completed: 42,
-  avatarUrl: "/images/alice.jpg", // vervang dit pad indien nodig
+  avatarUrl: "/images/alice.jpg",
 };
 
 export default function Dashboard() {
@@ -40,48 +36,33 @@ export default function Dashboard() {
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 pt-6 pb-6">
-      <WidgetWrapper
-        title="Leaderboard"
-        icon={<span>🏆</span>}
-        bgColor={bannerColor}
-        textColor="#ffffff"
-      >
-        <LeaderboardWidget players={leaderboardData} />
+      {/* Leaderboards */}
+      <WidgetWrapper title="Leaderboard (totaal)" icon={<span>🏆</span>} bgColor={bannerColor} textColor="#ffffff">
+        <LeaderboardWidget />
       </WidgetWrapper>
 
-      <WidgetWrapper
-        title="Scores"
-        icon={<span>📈</span>}
-        bgColor={bannerColor}
-        textColor="#ffffff"
-      >
+      <WidgetWrapper title="Leaderboard (dit jaar)" icon={<span>📅</span>} bgColor={bannerColor} textColor="#ffffff">
+        <LeaderboardWidget endpoint="/api/leaderboard?scope=season" />
+      </WidgetWrapper>
+
+      <WidgetWrapper title="Titels (gewonnen jaren)" icon={<span>👑</span>} bgColor={bannerColor} textColor="#ffffff">
+        <LeaderboardWidget endpoint="/api/leaderboard?scope=titles" />
+      </WidgetWrapper>
+
+      {/* Overige widgets */}
+      <WidgetWrapper title="Scores" icon={<span>📈</span>} bgColor={bannerColor} textColor="#ffffff">
         <ScoreChart data={chartData} />
       </WidgetWrapper>
 
-      <WidgetWrapper
-        title="Genres"
-        icon={<span>📚</span>}
-        bgColor={bannerColor}
-        textColor="#ffffff"
-      >
-        <GenreCountCard count={17} />
-      </WidgetWrapper>
-
-      <WidgetWrapper
-        title="Top genres"
-        icon={<span>📊</span>}
-        bgColor={bannerColor}
-        textColor="#ffffff"
-      >
+      <WidgetWrapper title="Top genres" icon={<span>📊</span>} bgColor={bannerColor} textColor="#ffffff">
         <TopGenresBarChart data={genreData} />
       </WidgetWrapper>
 
-      <WidgetWrapper
-        title="Top finisher"
-        icon={<span>👑</span>}
-        bgColor={bannerColor}
-        textColor="#ffffff"
-      >
+      <WidgetWrapper title="Genres" icon={<span>📚</span>} bgColor={bannerColor} textColor="#ffffff">
+        <GenreCountCard count={17} />
+      </WidgetWrapper>
+
+      <WidgetWrapper title="Top finisher" icon={<span>👑</span>} bgColor={bannerColor} textColor="#ffffff">
         <TopFinisherWidget
           name={topFinisher.name}
           completed={topFinisher.completed}

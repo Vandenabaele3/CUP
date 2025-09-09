@@ -1,17 +1,27 @@
-import { defineConfig } from 'vite'
+import { defineConfig, loadEnv } from 'vite'
 import react from '@vitejs/plugin-react'
-import path from 'path'
-import { fileURLToPath } from 'url'
 
-// __dirname alternatief in ESM
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename)
+export default defineConfig(({ mode }) => {
+  const env = loadEnv(mode, process.cwd(), '')
+  const API_BASE = env.VITE_API_BASE_URL || ''
+  const API_PREFIX = env.VITE_API_PREFIX || '/api'
 
-export default defineConfig({
-  plugins: [react()],
-  resolve: {
-    alias: {
-      '@': path.resolve(__dirname, 'src'),
+  return {
+    plugins: [react()],
+      server: {
+        port: 5173,
+        strictPort: true,
+        proxy: {
+          '/api': {
+            target: 'http://192.168.0.215:3001',
+            changeOrigin: true,
+            secure: false,
+          },
+        },
+      },
+
+    build: {
+      sourcemap: true,
     },
-  },
+  }
 })

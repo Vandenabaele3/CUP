@@ -1,5 +1,4 @@
 import React from "react";
-import "./BannerSelector.css";
 
 interface BannerSelectorProps {
   banners: { file: string; label: string }[];
@@ -8,16 +7,22 @@ interface BannerSelectorProps {
 
 const BannerSelector: React.FC<BannerSelectorProps> = ({ banners, onSelect }) => {
   return (
-    <div className="banner-selector">
+    <div className="flex flex-wrap gap-3 p-3 bg-white/5 rounded-xl justify-center">
       {banners.map(({ file, label }) => (
-        <div key={file} className="banner-item" onClick={() => onSelect(file)}>
+        <button
+          key={file}
+          type="button"
+          onClick={() => onSelect(file)}
+          className="flex flex-col items-center cursor-pointer focus:outline-none"
+          aria-label={label}
+        >
           <img
             src={`/images/backgrounds/${file}`}
             alt={label}
-            className="banner-thumbnail"
+            className="w-40 h-20 object-cover rounded-lg transition-transform duration-200 hover:scale-105 shadow hover:shadow-lg"
           />
-          <div className="banner-label">{label}</div>
-        </div>
+          <span className="mt-2 text-sm text-white/85">{label}</span>
+        </button>
       ))}
     </div>
   );

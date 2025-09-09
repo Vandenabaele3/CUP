@@ -1,0 +1,97 @@
+/* Grid: vaste kolommen, consistente gaps; sm-kaarten hebben exact profiel-footprint */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 16px;
+  align-items: stretch;
+}
+
+/* Breekpunten (pas aan naar jouw app-breedtes) */
+@media (max-width: 1400px) {
+  .dashboard-grid { grid-template-columns: repeat(8, 1fr); }
+}
+@media (max-width: 900px) {
+  .dashboard-grid { grid-template-columns: repeat(4, 1fr); }
+}
+
+/* Kaart-basics (match je dark UI en outlines) */
+.dash-card {
+  background: rgba(30, 10, 10, 0.9);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 16px;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.25);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  min-width: 0;
+}
+
+/* Titels */
+.dash-card__title {
+  font-weight: 600;
+  font-size: 14px;
+  opacity: 0.9;
+  margin-bottom: 8px;
+}
+
+/* Body */
+.dash-card__body {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* SM = compacte profielmaat: 4 kolommen breed, 1 “row-height” hoog */
+.dash-card--sm {
+  grid-column: span 4;   /* 3 kaarten per rij op 12-col grid */
+  height: 180px;         /* match met profile-kaartenhoogte */
+}
+
+/* LG = brede/hogere kaart: 6 kolommen breed en hoger */
+.dash-card--lg {
+  grid-column: span 6;   /* 2 per rij */
+  height: 360px;
+}
+
+/* Responsief gedrag */
+@media (max-width: 1400px) {
+  .dash-card--sm { grid-column: span 4; height: 180px; }
+  .dash-card--lg { grid-column: span 8; height: 340px; }
+}
+@media (max-width: 900px) {
+  .dash-card--sm { grid-column: span 4; height: 160px; }
+  .dash-card--lg { grid-column: span 4; height: 300px; }
+}
+
+/* Kleine helpers voor demo */
+.metric {
+  font-size: 44px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+.placeholder {
+  opacity: 0.6;
+  font-size: 14px;
+}
+.center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.avatar {
+  width: 64px;
+  height: 64px;
+  border-radius: 999px;
+  border: 2px solid rgba(255,255,255,0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 8px;
+}
+.sub {
+  font-size: 12px;
+  opacity: 0.7;
+  margin-bottom: 6px;
+}
