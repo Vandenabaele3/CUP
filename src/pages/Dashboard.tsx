@@ -1,4 +1,3 @@
-// src/pages/Dashboard.tsx
 import React from "react";
 import { useBannerColor } from "../context/ColorContext";
 
@@ -8,14 +7,19 @@ import ScoreChart from "../components/widgets/ScoreChart";
 import GenreCountCard from "../components/widgets/GenreCountCard";
 import TopGenresBarChart from "../components/widgets/TopGenresBarChart";
 import TopFinisherWidget from "../components/widgets/TopFinisherWidget";
+import RecentCompletedWidget from "../components/widgets/RecentCompletedWidget";
 
-const chartData = [
-  { date: "Ma", Alice: 10, Bob: 12, Charlie: 8 },
-  { date: "Di", Alice: 14, Bob: 10, Charlie: 9 },
-  { date: "Wo", Alice: 9, Bob: 15, Charlie: 11 },
-  { date: "Do", Alice: 17, Bob: 13, Charlie: 14 },
-  { date: "Vr", Alice: 13, Bob: 11, Charlie: 12 },
-];
+// Eenvoudige witte icons (stroke volgt currentColor)
+import {
+  Trophy,
+  CalendarDays,
+  Crown,
+  LineChart,
+  CheckCircle2,
+  BarChart3,
+  BookOpen,
+  Medal,
+} from "lucide-react";
 
 const genreData = [
   { genre: "RPG", count: 18 },
@@ -37,32 +41,79 @@ export default function Dashboard() {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 pt-6 pb-6">
       {/* Leaderboards */}
-      <WidgetWrapper title="Leaderboard (totaal)" icon={<span>🏆</span>} bgColor={bannerColor} textColor="#ffffff">
+      <WidgetWrapper
+        title="Overall leaderboard"
+        icon={<Trophy size={16} />}
+        bgColor={bannerColor}
+        textColor="#ffffff"
+      >
         <LeaderboardWidget />
       </WidgetWrapper>
 
-      <WidgetWrapper title="Leaderboard (dit jaar)" icon={<span>📅</span>} bgColor={bannerColor} textColor="#ffffff">
+      <WidgetWrapper
+        title="Current season"
+        icon={<CalendarDays size={16} />}
+        bgColor={bannerColor}
+        textColor="#ffffff"
+      >
         <LeaderboardWidget endpoint="/api/leaderboard?scope=season" />
       </WidgetWrapper>
 
-      <WidgetWrapper title="Titels (gewonnen jaren)" icon={<span>👑</span>} bgColor={bannerColor} textColor="#ffffff">
+      <WidgetWrapper
+        title="CUP wins"
+        icon={<Crown size={16} />}
+        bgColor={bannerColor}
+        textColor="#ffffff"
+      >
         <LeaderboardWidget endpoint="/api/leaderboard?scope=titles" />
       </WidgetWrapper>
 
-      {/* Overige widgets */}
-      <WidgetWrapper title="Scores" icon={<span>📈</span>} bgColor={bannerColor} textColor="#ffffff">
-        <ScoreChart data={chartData} />
+      {/* Scores — over 3 kolommen op xl */}
+      <div className="col-span-1 md:col-span-2 xl:col-span-3">
+        <WidgetWrapper
+          title="Scores"
+          icon={<LineChart size={16} />}
+          bgColor={bannerColor}
+          textColor="#ffffff"
+        >
+          <ScoreChart />
+        </WidgetWrapper>
+      </div>
+
+      {/* Laatste 5 completions */}
+      <WidgetWrapper
+        title="Recent games"
+        icon={<CheckCircle2 size={16} />}
+        bgColor={bannerColor}
+        textColor="#ffffff"
+      >
+        <RecentCompletedWidget />
       </WidgetWrapper>
 
-      <WidgetWrapper title="Top genres" icon={<span>📊</span>} bgColor={bannerColor} textColor="#ffffff">
+      <WidgetWrapper
+        title="Top genres"
+        icon={<BarChart3 size={16} />}
+        bgColor={bannerColor}
+        textColor="#ffffff"
+      >
         <TopGenresBarChart data={genreData} />
       </WidgetWrapper>
 
-      <WidgetWrapper title="Genres" icon={<span>📚</span>} bgColor={bannerColor} textColor="#ffffff">
+      <WidgetWrapper
+        title="Genres"
+        icon={<BookOpen size={16} />}
+        bgColor={bannerColor}
+        textColor="#ffffff"
+      >
         <GenreCountCard count={17} />
       </WidgetWrapper>
 
-      <WidgetWrapper title="Top finisher" icon={<span>👑</span>} bgColor={bannerColor} textColor="#ffffff">
+      <WidgetWrapper
+        title="Top finisher"
+        icon={<Medal size={16} />}
+        bgColor={bannerColor}
+        textColor="#ffffff"
+      >
         <TopFinisherWidget
           name={topFinisher.name}
           completed={topFinisher.completed}
