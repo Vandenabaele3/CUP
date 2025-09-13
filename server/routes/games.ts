@@ -43,12 +43,10 @@ router.get("/", async (req, res) => {
   const whereSql = whereClauses.length ? `WHERE ${whereClauses.join(" AND ")}` : "";
 
   try {
-    // total count
     const countSql = `SELECT COUNT(*)::int AS count FROM public."Game" ${whereSql}`;
     const { rows: countRows } = await pool.query<{ count: number }>(countSql, params);
     const total = countRows[0]?.count ?? 0;
 
-    // page of items
     const listParams = [...params, pageSizeRaw, offset];
     const listSql = `
       SELECT
@@ -85,20 +83,11 @@ router.get("/", async (req, res) => {
 /* =========================================================================
  * GET /api/games/recent?limit=5[&view=ExactViewName]
  * Laatste N afgeronde games (Speler, Titel, Datum, Score).
- *
- * We gebruiken een bestaande *completed games*-view in schema public.
- * Kolommen die we autodetecteren:
- *   - username       (verplicht)
- *   - user_id        (optioneel ? null)
- *   - title|game_title (verplicht)
- *   - completed_at|completed_date|completion_date (verplicht)
- *   - score|value    (optioneel ? null)
  * =========================================================================*/
 router.get("/recent", async (req, res) => {
   const limit = Math.min(Math.max(parseInt(String(req.query.limit ?? "5"), 10) || 5, 1), 50);
   const preferredView = (req.query.view ? String(req.query.view) : "").trim();
 
-  // Jouw views eerst; dan generieke fallbacks
   const CANDIDATES = preferredView
     ? [preferredView]
     : [
@@ -209,6 +198,71 @@ router.get("/recent", async (req, res) => {
   } catch (e) {
     console.error("[/api/games/recent] DB error:", e);
     res.status(500).json({ error: "Failed to load recent completed games" });
+  }
+});
+
+/* =========================================================================
+ * GET /api/games/completed/my
+ * Query:
+ *  - page      (default 1)
+ *  - pageSize  (default 5, max 100)
+ *  - userId    (optioneel; dev fallback)
+ * Response:
+ *  { page, pageSize, total, items: [{ title, completionDate, score, isDlc }] }
+ * =========================================================================*/
+router.get("/completed/my", async (req: any, res) => {
+  try {
+    const userId =
+      req.user?.user_id ??
+      (req.query.userId ? Number(req.query.userId) : undefined);
+
+    if (!userId) {
+      return res.status(400).json({ error: "userId required" });
+    }
+
+    const page = Math.max(parseInt(String(req.query.page ?? "1"), 10) || 1, 1);
+    const pageSize = Math.min(
+      Math.max(parseInt(String(req.query.pageSize ?? "5"), 10) || 5, 1),
+      100
+    );
+    const offset = (page - 1) * pageSize;
+
+    const countSql = `
+      SELECT COUNT(*)::int AS total
+      FROM public."AllCompletedGames"
+      WHERE user_id = $1
+    `;
+    const listSql = `
+      SELECT
+        title,
+        (completion_date::date) AS completion_date,
+        score,
+        is_dlc
+      FROM public."AllCompletedGames"
+      WHERE user_id = $1
+      ORDER BY completion_date DESC, title ASC
+      LIMIT $2 OFFSET $3
+    `;
+
+    const [{ rows: c }, { rows: items }] = await Promise.all([
+      pool.query<{ total: number }>(countSql, [userId]),
+      pool.query(listSql, [userId, pageSize, offset]),
+    ]);
+
+    res.json({
+      page,
+      pageSize,
+      total: c[0]?.total ?? 0,
+      items: items.map((r: any) => ({
+        title: r.title,
+        completionDate: r.completion_date, // 'YYYY-MM-DD'
+        score: r.score != null ? Number(r.score) : null,
+        isDlc: !!r.is_dlc,
+      })),
+    });
+  } catch (e) {
+    console.error("[/api/games/completed/my] DB error:", e);
+    res.status(500).json({ error: "Failed to load completed games" });
   }
 });
 
